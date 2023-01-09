@@ -37,6 +37,7 @@ from juegos
 where ReleaseDate like '[^2]%';
 go
 -- 8.Devuelve todos los juegos que terminen o en N o en O.
+
 -- 9.Devuelve todos los juegos que empiecen por A y que se puedan jugar con mando.
 -- 10.Devuelve todos aquellos juegos que estén entre el 2000 y el 2010.
 -- 11.Devuelve todos los juegos que sean de la saga Final Fantasy.

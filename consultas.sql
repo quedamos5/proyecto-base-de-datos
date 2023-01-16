@@ -10,13 +10,13 @@ WHERE  table_name = 'juegos';
 
 go
 
--- 2. Lista todos los diferentes géneros, eliminando duplicados.
+-- 2. Lista todos los diferentes gï¿½neros, eliminando duplicados.
 SELECT DISTINCT Cast(genre AS VARCHAR(1000)) AS Genero
 FROM   juegos;
 
 go
 
--- 3. Lista únicamente aquellos juegos que puedan ser jugados únicamente en Linux
+-- 3. Lista ï¿½nicamente aquellos juegos que puedan ser jugados ï¿½nicamente en Linux
 SELECT nombre,
        platformlinux,
        platformmac,
@@ -37,7 +37,7 @@ ORDER  BY metacritic DESC;
 
 go
 
--- 5.Lista todos aquellos juegos que puedan ser jugados en Español pero no en Frances
+-- 5.Lista todos aquellos juegos que puedan ser jugados en Espaï¿½ol pero no en Frances
 SELECT nombre,
        supportedlanguages
 FROM   juegos
@@ -56,7 +56,7 @@ ORDER  BY diferencia DESC;
 
 go
 
--- 7.¿Cuántos juegos hay del siglo pasado?
+-- 7.ï¿½Cuï¿½ntos juegos hay del siglo pasado?
 SELECT Cast(nombre AS VARCHAR(1000)) AS Nombre,
        releasedate
 FROM   juegos
@@ -80,7 +80,7 @@ WHERE  nombre LIKE 'a%'
 
 go
 
--- 10.Devuelve todos aquellos juegos que estén entre el 2000 y el 2010.
+-- 10.Devuelve todos aquellos juegos que estï¿½n entre el 2000 y el 2010.
 SELECT nombre,
        releasedate
 FROM   juegos
@@ -95,7 +95,7 @@ WHERE  nombre LIKE '%Final Fantasy%';
 
 go
 
--- 12.Devuelve todos los juegos que sean de deportes y haya trabajado más de 3 desarrolladores.
+-- 12.Devuelve todos los juegos que sean de deportes y haya trabajado mï¿½s de 3 desarrolladores.
 SELECT nombre,
        genre,
        developercount
@@ -105,7 +105,7 @@ WHERE  genre LIKE '%sport%'
 
 go
 
--- 13.¿Cuántos juegos hay asociados a cada categoría?
+-- 13.ï¿½Cuï¿½ntos juegos hay asociados a cada categorï¿½a?
 SELECT genre,
        Count(nombre) AS CantidadJuegos
 FROM   juegos
@@ -114,7 +114,7 @@ ORDER  BY cantidadjuegos DESC;
 
 go
 
--- 14.¿Cuántos juegos se han sacado en cada año?
+-- 14.ï¿½Cuï¿½ntos juegos se han sacado en cada aï¿½o?
 SELECT releasedate,
        Count(nombre) AS CantidadJuegos
 FROM   juegos
@@ -122,24 +122,68 @@ GROUP  BY releasedate
 ORDER  BY releasedate;
 
 go
--- 15.En base a la consulta anterior, devuelve aquellos años en los que la media de puntuación esté entre un 6 y un 8,
--- 16.¿Cuál es la máxima, mínima y puntuación mínima por género?
--- 17.Usando LIMIT, devuelve el top 10 de juegos con mayor puntuación del 2012.
--- 18.Usando LIMIT, devuelve el top 10 de juegos más nuevos de género single player.
--- 19.Devuelve la media de nota de todos aquellos juegos que sean para mayores de 18 años.
--- 20.¿Cuántos juegos hay asociados a cada tipo (mayor de 18, de 17…)?
--- 21.Devuelve todos aquellos años en los que haya menos de 300 juegos.
--- 22.Devuelve todos los juegos que estén para Mac pero no para Windows.
+-- 15. En base a la consulta anterior, devuelve aquellos aÃ±os en los que la media de puntuaciÃ³n estÃ© entre un 6 y un 8,
+select 'En ' + CAST(ReleaseDate as nvarchar) + ': ' + CAST(COUNT(ReleaseDate) as nvarchar) cantidad from juegos group by ReleaseDate having AVG(Metacritic) >= 6 and AVG(Metacritic) <= 8 order by ReleaseDate
+
+go
+-- 16. Â¿CuÃ¡l es la mÃ¡xima, media y puntuaciÃ³n mÃ­nima por gÃ©nero?
+select genre GÃ©nero, 
+       MAX(Metacritic) 'PuntuaciÃ³n mÃ¡xima', 
+       AVG(Metacritic) 'PuntuaciÃ³n media', 
+       MIN(Metacritic) 'PuntuaciÃ³n mÃ­nima' 
+from juegos 
+group by Genre 
+order by Genre
+
+go
+-- 17. Usando LIMIT, devuelve el top 10 de juegos con mayor puntuaciÃ³n del 2012.
+select top(10) Nombre 
+from juegos 
+where ReleaseDate = 2012 
+order by Metacritic desc
+
+go
+-- 18. Usando LIMIT, devuelve el top 10 de juegos mÃ¡s nuevos de category single player.
+select top(10) nombre 
+from juegos 
+where Category like '%single player%' 
+order by ReleaseDate desc
+
+go
+-- 19. Devuelve la media de nota de todos aquellos juegos que sean para mayores de 18 aÃ±os.
+select AVG(Metacritic) 'Media de nota' 
+from juegos 
+where RequiredAge >= 18
+
+go
+-- 20. Â¿CuÃ¡ntos juegos hay asociados a cada tipo (mayor de 18, de 17â€¦)?
+select requiredAge, 
+       count(*) 'Juegos' 
+from juegos 
+group by RequiredAge 
+order by RequiredAge desc
+
+go
+-- 21. Devuelve todos aquellos aÃ±os en los que haya menos de 300 juegos.
+select ReleaseDate, 
+       COUNT(nombre) 
+from juegos 
+group by ReleaseDate 
+having COUNT(Nombre) < 300 
+order by ReleaseDate desc
+
+go
+-- 22.Devuelve todos los juegos que estï¿½n para Mac pero no para Windows.
 -- 23.Devuelve todos los juegos donde su precio final sea mayor a su precio inicial.
--- 24.Devuelve todos los juegos que no estén valorados en dólares.
+-- 24.Devuelve todos los juegos que no estï¿½n valorados en dï¿½lares.
 -- 25.Devuelve todos los juegos que tengan una mayor nota que 0, pero que hayan suspendido.
--- 26.Devuelve el top 15 de juegos con mayor número de DLC.
--- 27.Devuelve la información de los juegos que sólo se puedan jugar en Inglés.
--- 28.Devuelve el nombre(en minúscula) y la web (en mayúscula) de los juegos de acción o casuales.
--- 29.¿Cuál es el juego indie con mayor nota? 
--- 30.¿Y con menor nota?
--- 31.Devuelve toda la información del juego con menor nota, siempre que sea mayor a cero.
+-- 26.Devuelve el top 15 de juegos con mayor nï¿½mero de DLC.
+-- 27.Devuelve la informaciï¿½n de los juegos que sï¿½lo se puedan jugar en Inglï¿½s.
+-- 28.Devuelve el nombre(en minï¿½scula) y la web (en mayï¿½scula) de los juegos de acciï¿½n o casuales.
+-- 29.ï¿½Cuï¿½l es el juego indie con mayor nota? 
+-- 30.ï¿½Y con menor nota?
+-- 31.Devuelve toda la informaciï¿½n del juego con menor nota, siempre que sea mayor a cero.
 -- 32.Devuelve aquellos juegos que tengan mayor nota que la media.
--- 33.Devuelve el juego con mayor nota del año 2008.
--- 34.Devuelve toda la información de los juegos que valgan más que la media.
--- 35.Devuelve toda la información de los juegos de Linux que tengan el mayor número de logros (achivements)
+-- 33.Devuelve el juego con mayor nota del aï¿½o 2008.
+-- 34.Devuelve toda la informaciï¿½n de los juegos que valgan mï¿½s que la media.
+-- 35.Devuelve toda la informaciï¿½n de los juegos de Linux que tengan el mayor nï¿½mero de logros (achivements)

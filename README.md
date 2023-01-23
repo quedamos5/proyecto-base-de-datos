@@ -5,5 +5,6 @@
 # Sprint 3
 - Antonio &rarr; Realizar consultas del 15 al 21.
 # Sprint 4
+- Edu &rarr; Realizar consultas del 22 al 28.
 ## Scrum
 [Enlace Trello](https://trello.com/b/19iF0Ymg/proyectoets)

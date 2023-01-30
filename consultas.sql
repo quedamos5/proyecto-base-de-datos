@@ -181,9 +181,57 @@ go
 -- 27.Devuelve la informaci�n de los juegos que s�lo se puedan jugar en Ingl�s.
 -- 28.Devuelve el nombre(en min�scula) y la web (en may�scula) de los juegos de acci�n o casuales.
 -- 29.�Cu�l es el juego indie con mayor nota? 
+SELECT TOP 1 WITH TIES Nombre, Metacritic
+FROM juegos
+WHERE Genre LIKE '%indie%'
+ORDER BY Metacritic desc;
 -- 30.�Y con menor nota?
+SELECT TOP 1 WITH TIES Nombre, Metacritic
+FROM juegos
+WHERE Genre LIKE '%indie%' AND Metacritic != 0
+ORDER BY Metacritic;
 -- 31.Devuelve toda la informaci�n del juego con menor nota, siempre que sea mayor a cero.
+SELECT *
+FROM   juegos
+WHERE  metacritic = (SELECT Min(metacritic)
+                     FROM   juegos
+                     WHERE  metacritic != 0)
+
+go
 -- 32.Devuelve aquellos juegos que tengan mayor nota que la media.
+SELECT *
+FROM   juegos
+WHERE  metacritic > (SELECT Avg(metacritic)
+                     FROM   juegos
+                     WHERE  metacritic > 0);
+
+go
 -- 33.Devuelve el juego con mayor nota del a�o 2008.
+SELECT nombre,
+       metacritic,
+       releasedate
+FROM   juegos
+WHERE  releasedate = 2008
+       AND metacritic = (SELECT Max(metacritic)
+                         FROM   juegos
+                         WHERE  releasedate = 2008);
+
+go
 -- 34.Devuelve toda la informaci�n de los juegos que valgan m�s que la media.
+SELECT *
+FROM   juegos
+WHERE  pricefinal > (SELECT Avg(pricefinal)
+                     FROM   juegos);
+
+go
 -- 35.Devuelve toda la informaci�n de los juegos de Linux que tengan el mayor n�mero de logros (achivements)
+SELECT *
+FROM   juegos
+WHERE  platformlinux = 'True'
+       AND achievementcount = (SELECT Max(achievementcount)
+                               FROM   juegos
+                               WHERE  platformlinux = 'True');
+
+go 
+
+-- END

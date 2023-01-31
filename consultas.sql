@@ -188,12 +188,41 @@ ORDER  BY releasedate DESC
 go
 
 -- 22.Devuelve todos los juegos que est�n para Mac pero no para Windows.
+SELECT nombre
+FROM juegos
+WHERE PlatformMac = 'True' AND  PlatformWindows = 'False'
+GO
 -- 23.Devuelve todos los juegos donde su precio final sea mayor a su precio inicial.
+SELECT nombre
+FROM juegos
+WHERE PriceFinal > PriceInitial
+GO
 -- 24.Devuelve todos los juegos que no est�n valorados en d�lares.
+SELECT nombre, PriceCurrency
+FROM juegos
+WHERE PriceCurrency != 'USD'
+GO
 -- 25.Devuelve todos los juegos que tengan una mayor nota que 0, pero que hayan suspendido.
+SELECT nombre
+FROM juegos
+WHERE Metacritic BETWEEN 0 AND 49.99
+ORDER BY Metacritic ASC
+GO
 -- 26.Devuelve el top 15 de juegos con mayor n�mero de DLC.
+SELECT TOP 15 WITH TIES nombre
+FROM juegos
+ORDER BY DLCCount DESC
 -- 27.Devuelve la informaci�n de los juegos que s�lo se puedan jugar en Ingl�s.
+SELECT * --Entiendo como información de los juegos a todos los datos.--
+FROM juegos
+WHERE SupportedLanguages = 'English'
+GO
 -- 28.Devuelve el nombre(en min�scula) y la web (en may�scula) de los juegos de acci�n o casuales.
+SELECT LOWER(nombre), UPPER(Website)
+FROM juegos
+WHERE Genre LIKE '%casual%' or Genre LIKE '%action%'
+ORDER BY Genre
+GO
 -- 29.�Cu�l es el juego indie con mayor nota? 
 SELECT TOP 1 WITH ties nombre,
                        metacritic

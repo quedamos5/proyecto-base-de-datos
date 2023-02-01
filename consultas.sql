@@ -189,40 +189,57 @@ go
 
 -- 22.Devuelve todos los juegos que est�n para Mac pero no para Windows.
 SELECT nombre
-FROM juegos
-WHERE PlatformMac = 'True' AND  PlatformWindows = 'False'
-GO
+FROM   juegos
+WHERE  platformmac = 'True'
+       AND platformwindows = 'False'
+
+go
+
 -- 23.Devuelve todos los juegos donde su precio final sea mayor a su precio inicial.
 SELECT nombre
-FROM juegos
-WHERE PriceFinal > PriceInitial
-GO
+FROM   juegos
+WHERE  pricefinal > priceinitial
+
+go
+
 -- 24.Devuelve todos los juegos que no est�n valorados en d�lares.
-SELECT nombre, PriceCurrency
-FROM juegos
-WHERE PriceCurrency != 'USD'
-GO
+SELECT nombre,
+       pricecurrency
+FROM   juegos
+WHERE  pricecurrency != 'USD'
+
+go
+
 -- 25.Devuelve todos los juegos que tengan una mayor nota que 0, pero que hayan suspendido.
 SELECT nombre
-FROM juegos
-WHERE Metacritic BETWEEN 0 AND 49.99
-ORDER BY Metacritic ASC
-GO
+FROM   juegos
+WHERE  metacritic BETWEEN 0 AND 49.99
+ORDER  BY metacritic ASC
+
+go
+
 -- 26.Devuelve el top 15 de juegos con mayor n�mero de DLC.
-SELECT TOP 15 WITH TIES nombre
-FROM juegos
-ORDER BY DLCCount DESC
+SELECT TOP 15 WITH ties nombre
+FROM   juegos
+ORDER  BY dlccount DESC
+
 -- 27.Devuelve la informaci�n de los juegos que s�lo se puedan jugar en Ingl�s.
 SELECT * --Entiendo como información de los juegos a todos los datos.--
-FROM juegos
-WHERE SupportedLanguages = 'English'
-GO
+FROM   juegos
+WHERE  supportedlanguages = 'English'
+
+go
+
 -- 28.Devuelve el nombre(en min�scula) y la web (en may�scula) de los juegos de acci�n o casuales.
-SELECT LOWER(nombre), UPPER(Website)
-FROM juegos
-WHERE Genre LIKE '%casual%' or Genre LIKE '%action%'
-ORDER BY Genre
-GO
+SELECT Lower(nombre),
+       Upper(website)
+FROM   juegos
+WHERE  genre LIKE '%casual%'
+        OR genre LIKE '%action%'
+ORDER  BY genre
+
+go
+
 -- 29.�Cu�l es el juego indie con mayor nota? 
 SELECT TOP 1 WITH ties nombre,
                        metacritic
